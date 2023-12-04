@@ -1,36 +1,61 @@
 class Student:
-    def __init__(self, jmeno, prijmeni, hodnoceni, predmet=None):
+    def __init__(self, jmeno, vek, predmety=None, znamky=None):
         self.jmeno = jmeno
-        self.prijmeni = prijmeni
-        self.hodnoceni = hodnoceni
-        self.predmet = predmet if predmet else []
+        self.vek = vek
+        self.predmety = predmety if predmety else []
+        self.znamky = znamky if znamky else []
 
-    def info(self):
-        print(f"Jméno: {self.jmeno}, příjmení: {self.prijmeni}, hodnocení: {self.hodnoceni}, předmět: {self.predmet}")
+    def pridej_predmet(self, predmet):
+        self.predmety.append(predmet)
 
-    def znamka(self):
-        if self.hodnoceni > 90:
-            print("Výborně")
-        elif self.hodnoceni > 70:
-            print("Dobře")
-        elif self.hodnoceni > 50:
-            print("Prospěl")
-        else:
-            print("Neprospěl")
+    def ziskej_prumer(self):
+        if not self.znamky:
+            return 0
+        return sum(self.znamky) / len(self.znamky)
 
-    def add_predmet(self, predmet):
-        self.predmet.append(predmet)
+    def pridej_znamku(self, znamka):
+        self.znamky.append(znamka)
+
+    def informace(self):
+        print(f"Jméno: {self.jmeno}, Věk: {self.vek}, Předměty: {self.predmety}, Průměr: {self.ziskej_prumer()}")
 
 class Teacher:
-    def __init__(self, jmeno, predmet):
+    def __init__(self, jmeno, vek, predmet, studenti=None):
         self.jmeno = jmeno
+        self.vek = vek
         self.predmet = predmet
+        self.studenti = studenti if studenti else []
 
-    def add_hodnoceni(self, student, hodnoceni):
-        student.hodnoceni.append(hodnoceni)
+    def pridat_studenta(self, student):
+        self.studenti.append(student)
 
-student1 = Student("Jan", "Novák", 80)
-student1.info()
-student1.znamka()
-student1.add_predmet("Math")
-student1.info() 
+    def odebrat_studenta(self, student):
+        self.studenti.remove(student)
+
+    def informace(self):
+        print(f"Jméno: {self.jmeno}, Věk: {self.vek}, Předmět: {self.predmet}, Studenti: {len(self.studenti)}")
+
+student1 = Student("Jaroslav Melichar", 18)
+student1.pridej_predmet("PRC")
+student1.pridej_znamku(1)
+student1.pridej_znamku(3)
+student1.informace()
+
+
+student2 = Student("Filip Dubček", 19)
+student2.pridej_predmet("PRC")
+student2.pridej_znamku(1)
+student2.pridej_znamku(5)
+student2.informace()
+
+teacher1 = Teacher("Karolína Marešová", 25, "PRC,AG")
+teacher1.pridat_studenta(student1)
+teacher1.pridat_studenta(student2)
+
+teacher2 = Teacher("Martin Kokeš", 29, "WP,SES")
+teacher2.pridat_studenta(student1)
+teacher2.pridat_studenta(student2)
+
+print("\nInformace o učiteli:")
+teacher1.informace()
+teacher2.informace()
